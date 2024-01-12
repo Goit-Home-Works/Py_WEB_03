@@ -1,0 +1,14 @@
+[tool.poetry]
+name = "py-web-03"
+version = "0.1.0"
+description = "sort app in threads"
+authors = ["siracencoserghei <siracencoserghei@gmail.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.11"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
