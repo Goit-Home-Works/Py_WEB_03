@@ -9,7 +9,7 @@ RESET = "\033[0m"
 
 
 
-class FileManagerBot:
+class CLI_bot:
     def run(self):
         try:
             start_path = os.path.expanduser("~")

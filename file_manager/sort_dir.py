@@ -3,7 +3,7 @@ import sys
 from pathlib import Path
 from file_manager.process_directory import process_directory
 
-def sort_folder(folder: str) -> None:
+def sort_folder(folder) -> None:
     """ Головна функція обробки папки
 
     Args:
@@ -12,3 +12,4 @@ def sort_folder(folder: str) -> None:
     folder_path = Path(folder)
     sorted_folder_path = folder_path
     process_directory(folder_path, sorted_folder_path)
+    

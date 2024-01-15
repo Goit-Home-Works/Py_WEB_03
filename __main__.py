@@ -11,10 +11,14 @@ RESET = "\033[0m"
 class App_run:
     
     def cli_bot_run():
-        pass
+        from CLI_bot import CLI_bot
+        bot = CLI_bot()
+        bot.run()
     
     def gui_bot_run():
-        pass
+        from GUI_bot import GUI_bot
+        app = GUI_bot()
+        app.run_bot()
     
     def good_bye():
         print("Good bye!")
