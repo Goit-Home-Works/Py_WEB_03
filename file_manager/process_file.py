@@ -1,8 +1,7 @@
-
 from pathlib import Path
 import shutil
+from datetime import datetime
 from file_manager.normalize import normalize
-
 
 def process_file(file_path: Path, target_folder: Path) -> None:
     """Process a file by moving it to the target folder and renaming it."""
@@ -10,9 +9,10 @@ def process_file(file_path: Path, target_folder: Path) -> None:
     categories = {
         'images': ['jpeg', 'png', 'jpg', 'svg', 'gif', 'svg'],
         'videos': ['avi', 'mp4', 'mov', 'mkv'],
-        'documents': ['doc', 'docx', 'txt', 'pdf', 'xlsx', 'pptx', 'html'],
+        'documents': ['doc', 'docx', 'txt', 'pdf', 'xlsx', 'pptx'],
         'music': ['mp3', 'ogg', 'wav', 'amr'],
         'archives': ['zip', 'gz', 'tar'],
+        'SCRIPTS': ['json','log', 'py', 'pyc', 'js', 'jsx', 'css','html']
     }
     category = None
     for cat, extensions in categories.items():
@@ -22,23 +22,22 @@ def process_file(file_path: Path, target_folder: Path) -> None:
     if category is None:
         category = 'unknown'
 
-    
     try:
-        # Working with archives, extracting their content
-        if category == 'archives':
-            archive_folder_name = normalize(file_path.stem)
-            archive_folder = target_folder / 'archives' / archive_folder_name
-            # unpack archive file in archive folder
-            shutil.unpack_archive(str(file_path), str(archive_folder))
-            # move archive file to unpack folder
-            shutil.move(str(file_path), str(archive_folder / file_path.name))
+        # Initialize target_path to avoid NameError
+        target_path = target_folder / category / (normalize(file_path.stem) + file_path.suffix)
+
+        while target_path.exists():
+            timestamp = datetime.now().strftime("%Y%m%d%H%M%S")
+            new_file_name = f"{normalize(file_path.stem)}_{timestamp}{file_path.suffix}"
+            target_path = target_folder / category / new_file_name
+
     except shutil.ReadError as e:
         print(f"Error processing archive at '{file_path}': {e}")
     except Exception as e:
         print(f"An unexpected error occurred while processing '{file_path}': {e}")
     else:
-        new_file_name = normalize(file_path.stem) + file_path.suffix
-        target_path = target_folder / category / new_file_name
-        target_path.parent.mkdir(parents=True, exist_ok=True)
-        shutil.move(str(file_path), str(target_path))
-        
+        try:
+            target_path.parent.mkdir(parents=True, exist_ok=True)
+            shutil.move(str(file_path), str(target_path))
+        except shutil.Error as e:
+            print(f"Error moving file to '{target_path}': {e}")
