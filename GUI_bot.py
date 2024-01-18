@@ -50,7 +50,7 @@ class GUI_bot:
         try:
             entries = [".."] + [entry for entry in os.listdir(path) if not entry.startswith('.')]
         except OSError as e:
-            print(f"Error reading directory {path}: {e}")
+            # print(f"Error reading directory {path}: {e}")
             return
 
         self.tree.delete(*self.tree.get_children())

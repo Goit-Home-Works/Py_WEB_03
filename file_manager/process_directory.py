@@ -28,9 +28,6 @@ def process_directory(folders, path):
     for thread in threads:
         thread.join()
     
-    for item in folders:
-        if item.is_dir() and not list(item.iterdir()):
-            item.rmdir()
     folders = folder_content(path)
     for item in folders:
         if item.is_dir() and not list(item.iterdir()):
@@ -47,8 +44,9 @@ def process_folder(item, semaphore, path):
 def to_sort(folder_path, sorted_folder_path):
     logging.basicConfig(
     level=logging.DEBUG,
-    format="%(asctime)s %(threadName)s %(levelname)s: %(message)s",
-    datefmt="%M:%S"
+    format="{asctime} {threadName} {message}",
+    style="{",
+    datefmt="%D"
 )
 
     dirs_to_sort = folder_content(folder_path)

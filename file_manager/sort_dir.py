@@ -11,7 +11,7 @@ def sort_folder(folder) -> None:
     """
     logging.basicConfig(
         level = logging.DEBUG,
-        format = "{asctime} - {threadName} - {messages}",
+        format = "{asctime} - {threadName} - {}",
         style  = '{',
     )
     folder_path = Path(folder)

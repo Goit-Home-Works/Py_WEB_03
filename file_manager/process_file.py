@@ -25,11 +25,12 @@ def process_file(file_path: Path, target_folder: Path) -> None:
     try:
         # Initialize target_path to avoid NameError
         target_path = target_folder / category / (normalize(file_path.stem) + file_path.suffix)
+        counter = 1
 
         while target_path.exists():
-            timestamp = datetime.now().strftime("%Y%m%d%H%M%S")
-            new_file_name = f"{normalize(file_path.stem)}_{timestamp}{file_path.suffix}"
+            new_file_name = f"{normalize(file_path.stem)}_{counter}{file_path.suffix}"
             target_path = target_folder / category / new_file_name
+            counter += 1
 
     except shutil.ReadError as e:
         print(f"Error processing archive at '{file_path}': {e}")
