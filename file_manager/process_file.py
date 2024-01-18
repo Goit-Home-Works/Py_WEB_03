@@ -9,10 +9,10 @@ def process_file(file_path: Path, target_folder: Path) -> None:
     categories = {
         'images': ['jpeg', 'png', 'jpg', 'svg', 'gif', 'svg'],
         'videos': ['avi', 'mp4', 'mov', 'mkv'],
-        'documents': ['doc', 'docx', 'txt', 'pdf', 'xlsx', 'pptx'],
+        'documents': ['doc', 'docx', 'txt', 'pdf', 'xlsx', 'pptx', 'md'],
         'music': ['mp3', 'ogg', 'wav', 'amr'],
         'archives': ['zip', 'gz', 'tar'],
-        'SCRIPTS': ['json','log', 'py', 'pyc', 'js', 'jsx', 'css','html']
+        'SCRIPTS': ['json','log', 'py', 'pyc', 'js', 'ts', 'jsx', 'css','html']
     }
     category = None
     for cat, extensions in categories.items():

@@ -27,7 +27,9 @@ def process_directory(folders, path):
 
     for thread in threads:
         thread.join()
-    
+    if path.is_dir() and not list(path.iterdir()):
+        path.rmdir()
+        
     folders = folder_content(path)
     for item in folders:
         if item.is_dir() and not list(item.iterdir()):
@@ -56,5 +58,5 @@ if __name__ == "__main__":
     
     path = "~/Desktop/мотлох"
     folder_path = Path(path).expanduser()
-    sorted_folder_path = Path(path + "/Sorted").expanduser()  # Update with your desired sorted folder path
+    sorted_folder_path = Path(path).expanduser()  # Update with your desired sorted folder path
     to_sort(folder_path, sorted_folder_path)
