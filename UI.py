@@ -47,11 +47,11 @@ if __name__ == "__main__":
             print("{RED}Invalid input! Please enter a valid number.{RESET}")
             
         if action == 1:
-            # App_run.gui_bot_run()
-            pass
+            App_run.gui_bot_run()
+            # pass
         elif action == 2:
-            # App_run.cli_bot_run()
-            pass
+            App_run.cli_bot_run()
+            # pass
         elif action == 3:
             App_run.good_bye()
             break
