@@ -1,7 +1,9 @@
 import sys
+import os
 import timeit
 import time
 from multiprocessing import Manager, Process, Pool
+from concurrent.futures import ProcessPoolExecutor
 
 # def factorize(*number):
 #     # YOUR CODE HERE
@@ -53,26 +55,42 @@ def factorize_parallel(*numbers):
         results = pool.map(factorize_worker, numbers)
     numbers_dict = {str(num[-1]):num for num in results}
     return numbers_dict
+
+def factorize_executor(*numbers):
+    cpu_count = os.cpu_count()
+    executor = ProcessPoolExecutor(cpu_count)
+    with executor:
+        results = executor.map(factorize_worker, *numbers)
+    numbers_dict = {str(num[-1]): num for num in results}
+    return numbers_dict
         
 if __name__=="__main__":
+
     numbers = tuple(int(arg) for arg in sys.argv[1:])
+
     print("check with module - time: ")
     start_time_func = time.time()
     result = factorize_single_synchronous_process(*numbers)
     print(result)
     end_time_func = time.time()
     print("execution time for factorize_single_synchronous_process: ", end_time_func - start_time_func)
-    
+
     start_time_func = time.time()
     factorize_multi_processing(*numbers)
     end_time_func = time.time()
     print("execution time for factorize_multi_processing: ", end_time_func - start_time_func)
-    
+
     start_time_func = time.time()
     factorize_parallel(*numbers)
     end_time_func = time.time()
     print("execution time for factorize_parallel: ", end_time_func - start_time_func)
-    
+
+    start_time_func = time.time()
+    result = factorize_executor(numbers)
+    end_time_func = time.time()
+    print("execution time for factorize_executor: ", end_time_func - start_time_func)
+
+
     print("Check with module - timeit: ")
 
     # Define a callable function for timeit
@@ -84,16 +102,17 @@ if __name__=="__main__":
     times = timeit.repeat(stmt=stmt, setup=setup_code, repeat=20, number=1)
     average = sum(times) / len(times)
     print(f"Execution time for factorize_single_synchronous_process: ", average)
-    
+
     def timeit_factorize_multi_processing():
             factorize_multi_processing(*numbers)
-            
+
     setup_code = "from __main__ import timeit_factorize_multi_processing"
     stmt = "timeit_factorize_multi_processing()"
     times = timeit.repeat(stmt=stmt, setup=setup_code, repeat=20, number=1)
     average = sum(times) / len(times)
     print(f"Execution time for factorize_multi_processing: ", average)
-    
+
+
     def timeit_factorize_parallel():
             factorize_parallel(*numbers)
 
@@ -102,3 +121,12 @@ if __name__=="__main__":
     times = timeit.repeat(stmt=stmt, setup=setup_code, repeat=20, number=1)
     average = sum(times) / len(times)
     print(f"Execution time for factorize_parallel: ", average)
+
+    def timeit_factorize_executor():
+            factorize_executor(numbers)
+
+    setup_code = "from __main__ import timeit_factorize_executor"
+    stmt = "timeit_factorize_executor()"
+    times = timeit.repeat(stmt=stmt, setup=setup_code, repeat=20, number=1)
+    average = sum(times) / len(times)
+    print(f"Execution time for factorize_executor: ", average)
